@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Bumper Sticker Maker & Generator | Bottle Your Brand</title>
+    <meta name="description" content="Generate funny bumper stickers instantly. Edit text, change colors, and download high-quality PNGs for printing.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Oswald:wght@700&family=Roboto+Mono:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { margin: 0; padding: 20px; background-color: #f3f4f6; font-family: 'Montserrat', sans-serif; }
+        
+        /* PASTE YOUR STYLE HERE */
+        .byb-wrap{--byb:#3185cc;--fg:#111;--muted:#6b7280;font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;border:1px solid #e5e7eb;border-radius:16px;padding:16px;max-width:760px;margin:16px auto;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.05)}
+        .byb-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+        .byb-h{font-size:20px;font-weight:700;margin:0 0 8px;color:var(--fg)}
+        .byb-sub{font-size:12px;color:var(--muted);margin:-4px 0 10px}
+        .byb-btn{background:var(--byb);border:none;color:#fff;padding:0 14px;border-radius:10px;font-weight:700;cursor:pointer;height:42px;display:inline-flex;align-items:center}
+        .byb-btn:active{transform:translateY(1px)}
+        .byb-select{padding:9px 10px;border:1px solid #e5e7eb;border-radius:10px;font:inherit;height:42px}
+        .byb-controls{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+        .ctrl{display:flex;align-items:center;gap:8px}
+        .label{font-size:12px;color:var(--muted)}
+        .font-col{flex:0 0 240px}
+        .byb-color{display:inline-block;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:42px;width:42px}
+        .byb-color input{appearance:none;-webkit-appearance:none;border:none;width:100%;height:100%;padding:0;margin:0;cursor:pointer;display:block}
+        .byb-color input::-webkit-color-swatch-wrapper{padding:0}
+        .byb-color input::-webkit-color-swatch{border:none;border-radius:0}
+        .byb-color input::-moz-color-swatch{border:none}
+        .byb-canvas{width:100%;display:block;margin:10px 0;background:#f9fafb;border:none;border-radius:0}
+        .byb-cta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+        .byb-link{color:var(--byb);font-weight:700;text-decoration:none}
+        .byb-link:hover{text-decoration:underline}
+        .byb-inline-editor{position:absolute; inset:0; display:none; background:transparent; color:#000; font-weight:700; line-height:1.1; text-align:center; white-space:pre-wrap; overflow:auto; border:2px dashed var(--byb); border-radius:8px; outline:none; caret-color:auto; }
+        .byb-canvas-wrap:focus-within .byb-inline-editor{ box-shadow:0 0 0 3px rgba(49,133,204,.15) inset; }
+        
+        /* Footer styling */
+        .seo-footer { text-align: center; margin-top: 40px; font-size: 13px; color: #6b7280; }
+        .seo-footer a { color: #3185cc; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="byb-wrap" id="byb-sticker-gen" aria-live="polite">
+      <div class="byb-row" style="justify-content:space-between;align-items:flex-start">
+        <div style="flex:2 1 auto">
+          <h2 class="byb-h">Bumper Sticker Saying Generator</h2>
+          <div class="byb-sub">Click generate, then click the sticker to edit text. Pick a font & colors. Download or order.</div>
+        </div>
+        <div style="flex:0 0 auto"><button class="byb-btn" id="byb-generate">Generate</button></div>
+      </div>
+    
+      <div class="byb-canvas-wrap" style="position:relative">
+        <canvas id="byb-canvas" class="byb-canvas"></canvas>
+        <div id="byb-inline-editor" class="byb-inline-editor" contenteditable="true" role="textbox" aria-label="Edit bumper sticker text" spellcheck="false"></div>
+      </div>
+    
+      <div class="byb-controls">
+        <div class="ctrl font-col">
+          <span class="label">Font</span>
+          <select id="byb-font" class="byb-select">
+            <option value="Montserrat">Montserrat </option>
+            <option value="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif">Impact</option>
+            <option value="'Segoe UI', Roboto, Arial, sans-serif">Clean Sans</option>
+            <option value="'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Gothic</option>
+            <option value="Georgia, 'Times New Roman', serif">Serif</option>
+            <option value="'Courier New', monospace">Mono</option>
+          </select>
+        </div>
+        <div class="ctrl">
+          <span class="label">Background</span>
+          <div class="byb-color"><input id="byb-bg" type="color" value="#ffe600" aria-label="Background color"></div>
+        </div>
+        <div class="ctrl">
+          <span class="label">Text</span>
+          <div class="byb-color"><input id="byb-fg" type="color" value="#000000" aria-label="Text color"></div>
+        </div>
+        <button class="byb-btn" id="byb-download" style="margin-left:auto">Download PNG</button>
+      </div>
+    
+      <div class="byb-row byb-cta" style="margin-top:6px">
+        <span class="byb-sub" id="byb-status" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <div class="seo-footer">
+        <p>Courtesy of <a href="https://www.bottleyourbrand.com/blog/bumper-sticker-maker/" target="_blank">Bottle Your Brand</a></p>
+        <p>Need professional printing? <a href="https://www.bottleyourbrand.com/custom-bumper-sticker" target="_blank">Order Custom Bumper Stickers Here</a></p>
+    </div>
+
+    <script>
+    (function(){
+      const wrap = document.getElementById('byb-sticker-gen');
+      const canvas = document.getElementById('byb-canvas');
+      const ctx = canvas.getContext('2d');
+      const fontSel = document.getElementById('byb-font');
+      const bg = document.getElementById('byb-bg');
+      const fg = document.getElementById('byb-fg');
+      const editor = document.getElementById('byb-inline-editor');
+    
+      const MAX_LEN = 120;
+      const POOL = [
+      "I’m not arguing; I’m just explaining why I’m right", "Honk if you like peace and quiet", "I brake for hallucinations", "My other car is a broom", "Life’s a garden; dig it", "I put the elation in retaliation", "Happiness is a full tank and an empty schedule", "My dog is smarter than your honor student", "I’m not speeding; I’m qualifying", "Warning: I brake for animals, yard sales, and donuts", "I’d rather be fishing", "Don’t follow me; I’m lost too", "Born to shop, forced to work", "Coffee: Because adulting is hard", "I’m silently correcting your grammar", "If you can read this, I can’t see you in my rearview mirror", "Keep honking; I’m reloading", "Procrastinators unite… tomorrow", "I love animals; they’re delicious", "Life is short; smile while you still have teeth", "We are the proud parents of a child whose self-esteem is sufficient that he doesn’t need us promoting his minor scholastic achievements on the back of our car", "Lottery: A tax on people who are bad at math", "If you’re reading this, you’re too close", "Now beam down my clothes", "Just because you're paranoid doesn't mean they're not out to get you", "All men are idiots and I married their king", "If only I was as good as my dog thinks I am", "Cover me, I’m changing lanes", "Sometimes I wake up grumpy; other times I let her sleep", "If you don't like the way I drive, stay off the sidewalk", "Make it idiot proof and someone will make a better idiot", "When everything's coming your way, you're in the wrong lane", "What happens if you get scared half to death twice", "If you can't learn to do it well, learn to enjoy doing it badly", "I just got lost in thought. It was unfamiliar territory", "There are three kinds of people: those who can count, and those who cannot", "Don’t take life too seriously", "Reality is a lovely place, but I wouldn't want to live there", "I’m really speeding because I have to poop", "If you’re reading this you’re probably pulling me over", "Grow your own dope: Plant a man", "If you lost your cat, try looking under my tires", "My other ride is Uranus", "Opinions!", "I used to be cool", "No baby on board!", "Huge financial burden on board", "The fact that no one understands you doesn’t mean you’re an artist", "Caution – I’ve learnt to drive from GTA Vice City", "I’m 70, leave me the hell alone", "I’m into fitness. Fitness whole pizza in my mouth", "I hate bumper stickers", "Little Lebowski Urban Achiever", "Cheesecake: Say it like you’re pissed!", "Don’t you dare hit this person’s car", "Watch out for that idiot! He is a lousy driver", "Free Carbon Credits", "Don’t go to hell", "If you can't dazzle them with brilliance, baffle them with bull", "Beauty is in the eye of the beer holder", "You're only young once, but you can be immature forever", "The second mouse gets the cheese", "He who hesitates is not only lost, but miles from the next exit", "I’m not speeding, I’m flying low", "Caution: I drive like you do", "Cool Prius — nobody", "Nice Marmot", "Do you follow Jesus this closely?", "Nobody cares about your stick figure family", "Fueled by recycled dinosaurs", "You shall not pass", "This is the back of my car", "If you can read this, I’m not impressed. Most people can read", "Barely holden together", "Your stick figure family was delicious", "My other ride is your mom", "Honk if you love tacos", "My other ride is AI", "Running on caffeine & optimism", "I brake for no one", "Warning: thinks out loud", "If you can read this, you’re too close", "Be the reason someone smiles today", "Choose kindness. Every mile.", "My co-pilot is a dog", "Cat hair is my glitter", "Take the scenic route", "Mountains > Meetings", "404: Courtesy not found", "World’s okayest driver", "Espresso yourself", "Powered by pizza", "Make today a good ride", "Not fast, just curious", "Horn broken, watch for finger", "Where there’s a will, I want to be in it", "I started out with nothing & still have most of it left", "I don’t suffer from insanity, I enjoy every minute of it", "Out of my mind. Back in five minutes", "Forget about world peace… visualize using your turn signal", "Ever stop to think, and forget to start again?", "He who laughs last thinks slowest", "Very funny, Scotty. Now beam down my clothes", "Consciousness: that annoying time between naps", "Work is for people who don’t know how to fish", "Warning: dates in calendar are closer than they appear", "A clear conscience is usually the sign of a bad memory", "Change is inevitable, except from a vending machine", "Friends help you move. Real friends help you move bodies", "Always remember you’re unique, just like everyone else", "A day without sunshine is like… night", "0–60 in 15 minutes", "Mothers of teenagers know why animals eat their young", "A bartender is just a pharmacist with a limited inventory", "A waist is a terrible thing to mind", "Alcohol and calculus don't mix. Never drink and derive", "America: Love it or leave it!", "As long as there are tests, there will be prayer in public schools", "Be nice to your kids: They'll pick your nursing home", "Blessed are those who can laugh at themselves, for they shall never cease to be amused", "Boldly going nowhere", "Coffee, chocolate, men… some things are just better rich", "Diplomacy is the art of letting someone else get your way", "Never play leap frog with a unicorn", "Don't drink and drive… you might hit a bump and spill your drink", "Don't take life too seriously, no one gets out alive", "Don't sweat the petty things and don't pet the sweaty things", "Well-behaved women rarely make history", "I can resist everything except temptation", "Don’t follow me, I’m making this up as I go", "Driver carries no cash — kids take it all", "Why be normal?", "Born free — now I’m expensive", "Driver does not carry donuts (but wishes he did)", "Will work for tacos", "Beep beep, I’m a sheep", "Too cool to carpool", "Error 404: Sanity not found", "Not drunk, just avoiding potholes", "Honk if anything falls off", "Zombies ahead — floor it!", "Honk twice if you’re a moose", "Beam me up, I left the oven on", "Proud member of the procrastination nation", "My brakes are good — is your insurance?", "Sarcasm: just one more service I offer", "I childproofed my car, but they still get in", "Easily distracted — hey look, a squirrel!", "No airbags — we die like real men", "Caution: Driver singing loudly", "Too poor to be this rich in attitude", "I used up all my sick days, so I called in dead", "Honk if you wish people would use their turn signals", "I’m not messy, I’m creatively organized", "Faster than a speeding turtle", "Don’t rush me, I’m waiting for inspiration", "Honk if you’re lost too", "Real men use turn signals", "Proudly powered by leftovers", "My driving scares me too", "CAUTION: Vehicle makes frequent stops for snacks", "Honk if you love naps", "I brake for cake", "Running late is my cardio", "Parallel parking is my superpower", "I stop for squirrels (sometimes)", "Mondays should be optional", "Warning: Spontaneous dance party in progress", "This car fueled by coffee and chaos", "My sense of direction is as bad as my handwriting", "Just winging it, one lane at a time", "My life is held together by duct tape and hope", "World’s best driver — according to my mom", "Don’t tailgate — I’m likely to panic and make things awkward", "Current mood: cruise control", "Brake for donuts, pizza, and sometimes stop signs", "Too tired to adult, too broke to quit", "Keep calm and honk on", "My GPS is just a polite suggestion", "I’m not lost, I’m exploring", "Powered by dad jokes", "Happiness is a warm steering wheel", "Out of gas, but full of spirit", "Don’t honk — I’m already stressed out", "If at first you don’t succeed, skydiving is not for you", "Road rage happens to the best of us — I’m the best of us", "My other car is imaginary", "CAUTION: Driver only sings 80s hits", "Blinkers are optional — said no one ever", "Why yes, this is my happy face", "Keep calm and swerve on", "Stress spelled backwards is desserts", "Driver fueled by sarcasm", "Slower than Wi-Fi in a hotel", "In dog years, I’ve only been driving a week", "Please don’t make me adult today", "Honk if you believe in unicorns", "Life’s too short for bad coffee and worse drivers"
+      ];
+    
+      const PRINT_W_IN = 11.25, PRINT_H_IN = 3.25, DPI = 300;
+      const PRINT_W_PX = Math.round(PRINT_W_IN * DPI);
+      const PRINT_H_PX = Math.round(PRINT_H_IN * DPI);
+      const ASPECT = PRINT_W_PX / PRINT_H_PX;
+    
+      let currentText = '';
+      let isEditing = false;
+    
+      function resizePreview(){
+        const cssW = canvas.getBoundingClientRect().width;
+        const cssH = Math.round(cssW / ASPECT);
+        const dpr = window.devicePixelRatio || 1;
+        canvas.style.width = cssW + 'px';
+        canvas.style.height = cssH + 'px';
+        canvas.width = Math.round(cssW * dpr);
+        canvas.height = Math.round(cssH * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        redraw();
+      }
+    
+      function wrapTextRespectNewlines(ctx,text,maxWidth){
+        const paras = String(text||'').split('\n');
+        const lines = [];
+        for(const p of paras){
+          const words = p.split(/\s+/);
+          let line = '';
+          for(const w of words){
+            const test = line ? line+' '+w : w;
+            if(ctx.measureText(test).width <= maxWidth) line = test;
+            else { if(line) lines.push(line); line = w; }
+          }
+          lines.push(line);
+        }
+        return lines;
+      }
+    
+      function drawStickerTo(targetCtx, W, H, text, opts) {
+        const o = Object.assign(
+          { bg:'#000', fg:'#fff', font:'Montserrat', padding:36, lineH:1.1, minSize:18, maxSize:420 },
+          opts || {}
+        );
+        targetCtx.clearRect(0,0,W,H);
+        targetCtx.fillStyle = o.bg;
+        targetCtx.fillRect(0,0,W,H);
+        const maxW = Math.max(1, W - o.padding*2);
+        const maxH = Math.max(1, H - o.padding*2);
+        let lo = o.minSize, hi = o.maxSize, best = lo, bestLines = [''];
+        while (lo <= hi) {
+          const mid = Math.floor((lo + hi) / 2);
+          targetCtx.font = `700 ${mid}px ${o.font}`;
+          const lines = wrapTextRespectNewlines(targetCtx, text, maxW);
+          const blockH = lines.length * (mid * o.lineH);
+          if (blockH <= maxH) { best = mid; bestLines = lines; lo = mid + 2; }
+          else { hi = mid - 2; }
+        }
+        targetCtx.textAlign = 'center';
+        targetCtx.textBaseline = 'middle';
+        targetCtx.fillStyle = o.fg;
+        targetCtx.font = `700 ${best}px ${o.font}`;
+        const lineH = best * o.lineH;
+        const totalH = bestLines.length * lineH;
+        let y = (H - totalH) / 2 + lineH / 2;
+        for (const ln of bestLines) { targetCtx.fillText(ln, W/2, y); y += lineH; }
+      }
+    
+      function measureBestFit(W, H, text, fontFamily, lineH, padding, minSize=18, maxSize=420){
+        const tmp = document.createElement('canvas').getContext('2d');
+        let lo = minSize, hi = maxSize, best = lo, bestLines = [''];
+        while (lo <= hi){
+          const mid = Math.floor((lo+hi)/2);
+          tmp.font = `700 ${mid}px ${fontFamily}`;
+          const lines = wrapTextRespectNewlines(tmp, text, Math.max(1, W - padding*2));
+          const blockH = lines.length * (mid * lineH);
+          if (blockH <= Math.max(1, H - padding*2)){ best = mid; bestLines = lines; lo = mid + 2; }
+          else { hi = mid - 2; }
+        }
+        return { size: best, lines: bestLines };
+      }
+    
+      function syncEditorStyle(){
+        const dpr = window.devicePixelRatio || 1;
+        const W = canvas.width / dpr;
+        const H = canvas.height / dpr;
+        const pad = Math.round(H * 0.075);
+        const fit = measureBestFit(W, H, currentText || 'Your text here', fontSel.value, 1.1, pad);
+        editor.style.padding = `${pad}px`;
+        editor.style.fontFamily = fontSel.value;
+        editor.style.fontSize = `${fit.size}px`;
+        editor.style.lineHeight = '1.1';
+        editor.style.color = fg.value;
+      }
+    
+      function startInlineEdit(){
+        isEditing = true;
+        editor.textContent = (currentText || 'Your text here');
+        syncEditorStyle();
+        editor.style.display = 'block';
+        editor.focus();
+        const sel = document.getSelection();
+        if(sel) sel.collapse(editor, editor.childNodes.length);
+        redraw();
+      }
+    
+      function finishInlineEdit(){
+        isEditing = false;
+        editor.style.display = 'none';
+        redraw();
+      }
+    
+      function redraw(){
+        const text = (currentText || 'Your text here').slice(0, MAX_LEN);
+        const dpr = window.devicePixelRatio || 1;
+        const W = canvas.width / dpr;
+        const H = canvas.height / dpr;
+        drawStickerTo(ctx, W, H, isEditing ? '' : text, {
+          bg: bg.value,
+          fg: fg.value,
+          font: fontSel.value,
+          padding: Math.round(H * 0.075)
+        });
+        if(isEditing) syncEditorStyle();
+      }
+    
+      function regenerate(){
+        currentText = POOL[Math.floor(Math.random()*POOL.length)];
+        redraw();
+      }
+    
+      function downloadPrintPNG(){
+        const off = document.createElement('canvas');
+        off.width = PRINT_W_PX;
+        off.height = PRINT_H_PX;
+        const offCtx = off.getContext('2d');
+        drawStickerTo(offCtx, PRINT_W_PX, PRINT_H_PX, (currentText||'Your text here').slice(0,MAX_LEN), {
+          bg: bg.value, fg: fg.value, font: fontSel.value, padding: Math.round(PRINT_H_PX * 0.075)
+        });
+        const a = document.createElement('a');
+        a.download = 'byb-bumper-sticker.png';
+        a.href = off.toDataURL('image/png');
+        a.click();
+      }
+    
+      document.getElementById('byb-generate').addEventListener('click', regenerate);
+      [bg, fg, fontSel].forEach(el => el.addEventListener('input', ()=>{
+        redraw();
+        if(isEditing) syncEditorStyle();
+      }));
+      document.getElementById('byb-download').addEventListener('click', downloadPrintPNG);
+      canvas.addEventListener('click', ()=>{ if(!isEditing) startInlineEdit(); });
+      editor.addEventListener('input', ()=>{ currentText = editor.textContent.slice(0, MAX_LEN); redraw(); });
+      editor.addEventListener('keydown', (e)=>{
+        if((e.key === 'Enter' && (e.metaKey || e.ctrlKey)) || e.key === 'Escape'){
+          e.preventDefault();
+          if(e.key==='Escape') editor.textContent = currentText || 'Your text here';
+          finishInlineEdit();
+        }
+      });
+      editor.addEventListener('blur', finishInlineEdit);
+      window.addEventListener('resize', ()=>{ resizePreview(); if(isEditing) syncEditorStyle(); });
+      resizePreview();
+      regenerate();
+    })();
+    </script>
+</body>
+</html>
